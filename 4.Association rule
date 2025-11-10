@@ -1,0 +1,74 @@
+4. Assocition rule 
+
+import sys
+print(sys.executable)
+!{sys.executable} -m pip install mlxtend
+________________________________________
+
+
+import csv
+import pandas as pd
+import numpy as np
+from mlxtend.preprocessing import TransactionEncoder
+from mlxtend.frequent_patterns import apriori, association_rules
+________________________________________
+
+
+data = [ ]
+with open(r"C:\Users\ANIKET\Downloads\ml  practile\Market_Basket_Optimisation.csv", 'r') as file:
+reader = csv.reader(file, delimiter=',')
+for row in reader:
+data +=[row]
+________________________________________
+
+
+data[1:10]
+________________________________________
+
+
+len(data)
+________________________________________
+
+te = TransactionEncoder()
+X = te.fit(data).transform(data)
+________________________________________
+
+X
+________________________________________
+
+te.columns_
+________________________________________
+
+
+df = pd.DataFrame(X, columns=te.columns_)
+________________________________________
+
+df
+________________________________________
+
+
+freq_itemsets = apriori(df, min_support=0.01, use_colnames=True)
+________________________________________
+
+freq_itemsets
+________________________________________
+
+rules =association_rules(freq_itemsets, metric="lift", min_threshold=0.1)
+________________________________________
+
+rules = rules[["antecedents", "consequents", "support", "confidence"]]
+rules
+________________________________________
+
+ rules[rules["antecedents"]=={"cake"}]["consequents"]
+________________________________________
+
+
+
+
+
+
+
+
+
+

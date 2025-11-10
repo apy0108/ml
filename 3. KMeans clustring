@@ -1,0 +1,114 @@
+3. KMeans clustring
+________________________________________
+1.	import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+________________________________________
+2.	df =pd.read_csv(r"C:\Users\ANIKET\Downloads\ml  practile\Mall_Customers.csv")
+
+________________________________________
+3.	df
+
+________________________________________
+X = df.iloc[:,3:]
+X
+
+________________________________________
+plt.title("Unclustered Data")
+sns.scatterplot(x=X['Annual Income (k$)'], y=X['Spending Score (1-100)'])
+
+________________________________________
+plt.title("Unclustered Data")
+sns.scatterplot(x=X['Annual Income (k$)'], y=X['Spending Score (1-100)'])
+plt.show()
+
+________________________________________
+from sklearn.cluster import KMeans, AgglomerativeClustering
+
+________________________________________
+km = KMeans(n_clusters=4)
+________________________________________
+km.fit_predict(X)
+
+________________________________________
+km.inertia_
+
+________________________________________
+sse = []
+for k in range(1,16):
+    km = KMeans(n_clusters=k, random_state=42)
+    km.fit_predict(X)
+    labels = km.fit_predict(X)
+    sse.append(km.inertia_)
+
+________________________________________
+print(sse)
+
+________________________________________
+sns.lineplot(x=range(1,16), y=sse)
+plt.xlabel('Number of Clusters (k)')
+plt.ylabel('SSE')
+plt.title('Elbow Method')
+plt.show()
+________________________________________
+from sklearn.metrics import silhouette_score
+________________________________________
+silh =[]
+for k in range(2,16):
+    km = KMeans(n_clusters=k, random_state=42)
+    labels = km.fit_predict(X)
+    silh.append(silhouette_score(X, labels))________________________________________
+print(silh)
+________________________________________
+
+sns.lineplot(x=range(2,16), y = silh)
+plt.xlabel(" Number of cluster")
+plt.ylabel("Silhourtte Score")
+plt.title("Silhouette Analysis")
+plt.show()
+
+________________________________________
+plt.bar(x=range(2,16,1), height=silh)
+
+________________________________________
+km = KMeans(n_clusters=5, random_state=1)
+labels = km.fit_predict(X)
+________________________________________
+km.labels_
+
+________________________________________
+cent = km.cluster_centers_
+
+________________________________________
+plt.title("Clustered Data ")
+sns.scatterplot(x=X['Annual Income (k$)'], y=X['Spending Score (1-100)'], hue=km.labels_, palette='Set1')
+sns.scatterplot(x=cent[:,0], y=cent[:,1], s=200, color='red',)
+plt.show()
+
+________________________________________
+df[labels==0]
+
+agl = AgglomerativeClustering(n_clusters=5)
+________________________________________
+alabels = agl.fit_predict(X)
+
+________________________________________
+alabels
+
+________________________________________
+plt.figure(figsize =(16,9))
+plt.subplot(1,2,1)
+plt.title("Agglomerative Clustering")
+sns.scatterplot(x=X['Annual Income (k$)'], y=X['Spending Score (1-100)'], hue=alabels, palette='Set1')
+
+plt.subplot(1,2,2)
+plt.title("K Means ")
+sns.scatterplot(x=X['Annual Income (k$)'], y=X['Spending Score (1-100)'], hue=km.labels_, palette='Set1')
+sns.scatterplot(x=cent[:,0], y=cent[:,1], s=200, color='red',)
+plt.show()
+
+________________________________________
+
+
+________________________________________________________________________________________________________________________

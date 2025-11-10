@@ -1,0 +1,158 @@
+1.	Regression
+________________________________________
+
+
+from sklearn.model_selection import train_test_split
+from sklearn. linear_model import LinearRegression
+import matplotlib.pyplot as plt
+import numpy as np # Linear algebra
+import pandas as pd # data processing,
+import seaborn as sns
+
+________________________________________
+
+
+data=pd.read_csv(r"C:\Users\ANIKET\Downloads\ml  practile\temperatures.csv")
+
+________________________________________
+data.describe()
+
+
+________________________________________
+data.head()
+
+________________________________________
+
+data.tail()
+________________________________________
+
+type(data)
+________________________________________
+
+data.shape
+
+________________________________________
+data.info()
+
+
+________________________________________
+
+
+count=(data["JAN"]==22).sum()
+print(count)
+
+________________________________________
+
+column =data
+count = column[column==0].count()
+print(count)
+________________________________________
+data.isnull().sum()
+
+
+________________________________________
+data.isnull().head()
+
+
+
+________________________________________
+
+data.info()
+
+________________________________________
+x=data["YEAR"]
+y=data["ANNUAL"]
+
+
+________________________________________
+plt.plot(x,y,'o')
+
+
+________________________________________
+sns.scatterplot(x=x, y=y)
+
+
+________________________________________
+
+type(x)
+
+
+________________________________________
+x.shape
+
+________________________________________
+x=x.values
+
+________________________________________
+x=x.reshape(117,1)
+________________________________________
+x.shape
+________________________________________
+type(x)
+
+
+________________________________________
+
+
+
+
+
+x_train, x_test, y_train, y_test =train_test_split(x,y,test_size=0.25)
+print(f"x Training dataset: {x_train.shape}")
+print(f"y Training dataset: {y_train. shape}")
+print(f"x test dataset: {x_test.shape}")
+print(f"y test dataset: {y_test. shape}")
+
+________________________________________
+
+model =LinearRegression()
+
+________________________________________
+
+model.fit(x_train, y_train)
+
+________________________________________
+model.coef_
+
+
+________________________________________
+plt.scatter(x_train,y_train, color='blue') 
+plt.plot(x_test,y_pred, color='red', linewidth=3)
+plt. title("Temperature vs Year")
+plt.xlabel ("Year")
+plt.ylabel("Temperature")
+plt. show()
+
+
+________________________________________
+
+y_pred=model.predict(x_test)
+________________________________________
+
+y_pred.shape
+
+________________________________________
+plt.scatter(x_train, y_train, color='blue' )
+plt.plot(x_test, y_pred, color='red', linewidth=3)
+plt. title("Temperature vs Year")
+plt. xlabel ("Year")
+plt.ylabel ("Temperature")
+plt. show()
+
+
+________________________________________
+
+
+sns.regplot( data=data,x=x_train, y=y_train)
+
+________________________________________
+from sklearn.metrics import mean_absolute_error, mean_squared_error,r2_score
+print(f"MSE: {mean_squared_error(y_test, y_pred) }")
+print(f"MAE: {mean_absolute_error(y_test,y_pred)}")
+print(f"R-Sqaure : {r2_score(y_test,y_pred)}")
+
+
+
+________________________________________
+
+

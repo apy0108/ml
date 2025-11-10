@@ -1,0 +1,94 @@
+2. classification
+________________________________________
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+________________________________________
+df = pd.read_csv(r"C:\Users\ANIKET\Downloads\ml  practile\Admission_Predict_Ver1.1.csv")
+
+________________________________________
+df.head()
+
+________________________________________
+df.shape
+
+________________________________________
+df.head()
+
+________________________________________
+df["Chance of Admit "] = [1 if i>=0.75 else 0 for i in df["Chance of Admit "]]
+
+________________________________________
+df.head()
+
+
+________________________________________
+X= df[['GRE Score', 'TOEFL Score', 'University Rating', 'SOP', 'LOR ', 'CGPA', 'Research']]
+Y= df['Chance of Admit ']
+
+________________________________________
+
+from sklearn.model_selection import train_test_split
+
+________________________________________
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+
+________________________________________
+print(f"sizeof splitted data ")
+print(f"X_train: {X_train.shape}")
+print(f"Y_train: {Y_train.shape}")
+print(f"X_test: {X_test.shape}")
+print(f"Y_test: {Y_test.shape}")
+
+
+________________________________________
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import LogisticRegression
+
+
+________________________________________
+model_dt = DecisionTreeRegressor(random_state=1)
+model_rf =RandomForestRegressor(random_state=1)
+
+model_lr =LogisticRegression(random_state=1,solver="lbfgs",max_iter=1000 )
+model_dt.fit(X_train, Y_train)
+
+________________________________________
+model_rf.fit(X_train, Y_train)
+
+________________________________________
+
+model_lr.fit(X_train, Y_train)
+
+________________________________________
+Y_pred_dt = model_dt.predict(X_test)
+Y_pred_rf = model_rf.predict(X_test)    
+Y_pred_lr = model_lr.predict(X_test)
+
+________________________________________
+Y_pred_rf=[1 if each >0.75 else 0 for each in Y_pred_rf]
+
+________________________________________
+from sklearn.metrics import ConfusionMatrixDisplay, confusion_matrix, accuracy_score    
+from sklearn.metrics import classification_report
+
+________________________________________
+ConfusionMatrixDisplay.from_predictions(Y_test, Y_pred_dt)
+plt.title("Decision Tree ")
+plt.show()
+
+
+________________________________________
+print (f"Accuracy is : {accuracy_score(Y_test, Y_pred_dt)} ")
+print (f"Accuracy is : {accuracy_score(Y_test, Y_pred_dt)*100} %")
+
+
+________________________________________
+print (f"Accuracy is : {accuracy_score(Y_test, Y_pred_dt)} ")
+print (f"Accuracy is : {accuracy_score(Y_test, Y_pred_dt)*100} %")
+
+
+________________________________________
+
